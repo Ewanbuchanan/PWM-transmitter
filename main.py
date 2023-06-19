@@ -10,7 +10,7 @@ PULSE_HIGH_DURATION = 0.006  # High pulse duration in seconds
 PULSE_LOW_DURATION = 0.006  # Low pulse duration in seconds
 
 # Set binary data to send
-test_str = str((input("What code"))) # Example binary data
+test_str = str((input("What code"))) 
 binary_data = ''.join(format(ord(i), '08b') for i in test_str)
 def setup_gpio():
     GPIO.setmode(GPIO.BCM)
@@ -38,12 +38,12 @@ def receive_binary_data():
     while True:
         if GPIO.input(RECEIVER_PIN) == GPIO.HIGH:
             received_data += "1"
-            time.sleep(PULSE_LOW_DURATION)
+            time.sleep(PULSE_LOW_DURATION + PULSE_HIGH_DURATION)
 
             
         else:
             received_data += "0"
-            time.sleep(PULSE_LOW_DURATION)
+            time.sleep(PULSE_LOW_DURATION + PULSE_HIGH_DURATION)
             
     
         if len(received_data) == 8:
@@ -65,11 +65,13 @@ if __name__ == "__main__":
         print("Sending data:", binary_data)
         send_binary_data(binary_data)
 
-        time.sleep(1)  # Wait for transmission to complete
+        time.sleep(1) 
 
         # Receiving data
         received_data = receive_binary_data()
         print("Received data:", received_data)
+        Decoded_code = decode_binary_string()
+        print(Decoded_code)
 
     except KeyboardInterrupt:
         pass
